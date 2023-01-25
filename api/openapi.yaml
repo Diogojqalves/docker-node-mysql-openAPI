@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: Ninjas
+  description: An example REST API
+  contact:
+    name: my student id
+    email: my.student.email@intitution.country
+  version: 0.0.1
+servers:
+- url: http://localhost:8080
+  description: My localhost
+  variables:
+    basePath:
+      default: /
+paths:
+  /ninjas:
+    get:
+      tags:
+      - NinjasController
+      summary: Retrieve ninjas
+      operationId: retrieveNinjas
+      responses:
+        "200":
+          description: Array of Ninja model instances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ninja'
+                x-content-type: application/json
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      x-swagger-router-controller: NinjasController
+    post:
+      tags:
+      - NinjasController
+      summary: Create ninja
+      operationId: createNinja
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ninja'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Ninja'
+      responses:
+        "200":
+          description: Create a Ninja model instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ninja'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Ninja'
+        "400":
+          description: Bad request
+      x-swagger-router-controller: NinjasController
+  /ninjas/{id}:
+    get:
+      tags:
+      - NinjasController
+      summary: Retrieve ninja
+      operationId: retrieveNinja
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+        examples:
+          one:
+            summary: Retrieve Ninja id 1
+            value: 1
+          two:
+            summary: Retrieve Ninja id 2
+            value: 2
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ninja'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Ninja'
+        "400":
+          description: Bad request
+        "404":
+          description: id not found
+      x-swagger-router-controller: NinjasController
+    put:
+      tags:
+      - NinjasController
+      summary: Update ninja
+      operationId: updateNinja
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+        examples:
+          one:
+            summary: Update Ninja id 1
+            value: 1
+          two:
+            summary: Update Ninja id 2
+            value: 2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ninja'
+            examples:
+              AeroportoExample01:
+                $ref: '#/components/examples/NinjaExample01'
+              AeroportoExample02:
+                $ref: '#/components/examples/NinjaExample02'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                description: Ninja PUT success
+                x-content-type: application/json
+        "400":
+          description: Bad request
+        "404":
+          description: id not found
+      x-swagger-router-controller: NinjasController
+    delete:
+      tags:
+      - NinjasController
+      summary: Delete ninja
+      operationId: deleteNinja
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+        examples:
+          one:
+            summary: Delete Ninja id 1
+            value: 1
+          two:
+            summary: Delete Ninja id 2
+            value: 2
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: id not found
+      x-swagger-router-controller: NinjasController
+components:
+  schemas:
+    Ninja:
+      title: Ninja
+      required:
+      - village
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        village:
+          type: string
+      additionalProperties: false
+      example:
+        name: name
+        village: village
+        id: 0
+    inline_response_200:
+      type: object
+      properties:
+        Ninja:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ninja'
+      xml:
+        name: ninjas
+  examples:
+    NinjaExample01:
+      value:
+        id: 1
+        name: Ninja 01
+        village: village 1
+    NinjaExample02:
+      value:
+        id: 2
+        name: Ninja 02
+        village: village 2
